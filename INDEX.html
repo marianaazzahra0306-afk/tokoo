@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Merryverse Book Store</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+
+        body {
+            background-color: #fff6f9;
+            color: #333;
+        }
+
+        header {
+            background: #ffd6e0;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff4d88;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #ff4d88;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(255,214,224,0.6), rgba(255,214,224,0.6)), 
+                        url("Logo1.jpeg");
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #ff4d88;
+        }
+
+        .hero p {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #ff4d88;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #ff1a66;
+        }
+
+        .produk {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .produk h2 {
+            margin-bottom: 20px;
+            color: #ff4d88;
+        }
+
+        .produk-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #ffeaf0;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+        }
+
+        .keranjang {
+            padding: 40px 20px;
+            background: #fff0f5;
+        }
+
+        .keranjang ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        footer {
+            background: #ffd6e0;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo"><img src="Logo2.jpeg" alt=""> Merryverse</div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#produk">Produk</a>
+        <a href="#kategori">Kategori</a>
+        <a href="#keranjang">Keranjang (<span id="jumlah">0</span>)</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <h1>Selamat Datang di Toko Merryverse</h1>
+    <p>Temukan buku favoritmu✨</p>
+    <button class="btn" onclick="scrollKeProduk()">Belanja Sekarang</button>
+</section>
+
+<section class="produk" id="produk">
+    <h2>Produk Buku</h2>
+
+    <div class="produk-container">
+
+        <div class="card">
+            <img src="Bandung After Rain.jpeg">
+            <h3>Novel Bandung After Rain</h3>
+            <p>Rp 99.000</p>
+            <button class="btn" onclick="tambahKeranjang('Bandung After Rain')">Tambah ke Keranjang</button>
+        </div>
+
+        <div class="card">
+            <img src="Cantik Itu Luka.jpeg">
+            <h3>Novel Cantik Itu Luka</h3>
+            <p>Rp 100.000</p>
+            <button class="btn" onclick="tambahKeranjang('Cantik Itu Luka')">Tambah ke Keranjang</button>
+        </div>
+
+        <div class="card">
+            <img src="Laut Bercerita.jpeg">
+            <h3>Novel Laut Bercerita</h3>
+            <p>Rp 115.000</p>
+            <button class="btn" onclick="tambahKeranjang('Laut Bercerita')">Tambah ke Keranjang</button>
+        </div>
+
+        <div class="card">
+            <img src="Perempuan yang Menangis Kepada Bulan Hitam.jpeg">
+            <h3>Novel Perempuan yang Menangis Kepada Bulan Hitam</h3>
+            <p>Rp 89.000</p>
+            <button class="btn" onclick="tambahKeranjang('Perempuan Yang Menangis Kepada Bulan Hitam')">Tambah ke Keranjang</button>
+        </div>
+
+    </div>
+</section>
+
+<section class="produk" id="kategori">
+    <h2>Kategori</h2>
+    <p>novel</p>
+</section>
+
+<section class="keranjang" id="keranjang">
+    <h2>Keranjang</h2>
+    <button class="btn" onclick="kosongkanKeranjang()">Kosongkan Keranjang</button>
+    <ul id="listKeranjang"></ul>
+</section>
+
+<footer>
+    <p>📞 0812-3456-7890</p>
+    <p>📧 merryverse@gmail.com</p>
+    <p>© 2026 Merryverse Book Store</p>
+</footer>
+
+<script>
+    let keranjang = [];
+
+    function tampilkanKeranjang() {
+        let list = document.getElementById("listKeranjang");
+        list.innerHTML = "";
+
+        keranjang.forEach((item, index) => {
+            let li = document.createElement("li");
+            li.innerHTML = `
+                ${item} 
+                <button onclick="hapusItem(${index})">❌</button>
+            `;
+            list.appendChild(li);
+        });
+
+        document.getElementById("jumlah").textContent = keranjang.length;
+    }
+
+    function tambahKeranjang(nama) {
+        keranjang.push(nama);
+        tampilkanKeranjang();
+    }
+
+    function hapusItem(index) {
+        keranjang.splice(index, 1);
+        tampilkanKeranjang();
+    }
+
+    function kosongkanKeranjang() {
+        keranjang = [];
+        tampilkanKeranjang();
+    }
+
+    function scrollKeProduk() {
+        document.getElementById("produk").scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+</script>
+
+</body>
+</html>
